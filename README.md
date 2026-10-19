@@ -33,7 +33,7 @@ One-time setup: add a repository secret under **Settings → Secrets and variabl
 
 - `CLOUDFLARE_API_TOKEN`: a custom token with *Account · Cloudflare Pages · Edit*, *Zone · DNS · Edit* and
   *Zone · Zone · Read* (zone: iowaaeo.com)
-- `CLOUDFLARE_ACCOUNT_ID` (optional): only needed if the token can see more than one account
+- `CLOUDFLARE_ACCOUNT_ID` (optional): read from the iowaaeo.com zone when not set
 
 Then re-run the workflow from the **Actions** tab, or push any change.
 

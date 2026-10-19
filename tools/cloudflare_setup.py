@@ -6,7 +6,7 @@
     python3 tools/cloudflare_setup.py domains   # attach custom domains and point DNS at Pages
 
 Needs CLOUDFLARE_API_TOKEN (Pages:Edit, DNS:Edit, Zone:Read). CLOUDFLARE_ACCOUNT_ID
-is optional when the token can see exactly one account. Safe to run repeatedly.
+is optional; it is read from the DOMAIN zone. Safe to run repeatedly.
 """
 import json
 import os
@@ -44,13 +44,14 @@ def find_account():
     """Look up the account ID and export it for later workflow steps."""
     global ACCOUNT
     if not ACCOUNT:
-        _, res = call("GET", "/accounts")
-        accounts = res["result"]
-        if len(accounts) != 1:
-            names = ", ".join(a["name"] for a in accounts) or "none"
-            sys.exit(f"::error::Token sees {len(accounts)} accounts ({names}); add a CLOUDFLARE_ACCOUNT_ID secret")
-        ACCOUNT = accounts[0]["id"]
-        print(f"Using account {accounts[0]['name']}")
+        # The zone record carries its account, and needs only Zone:Read
+        # (listing /accounts would need an extra Account Settings permission).
+        _, res = call("GET", f"/zones?name={DOMAIN}")
+        if not res["result"]:
+            sys.exit(f"::error::Token can't see zone {DOMAIN}; add it to Cloudflare or set a CLOUDFLARE_ACCOUNT_ID secret")
+        account = res["result"][0]["account"]
+        ACCOUNT = account["id"]
+        print(f"Using account {account.get('name', ACCOUNT)}")
     env_file = os.environ.get("GITHUB_ENV")
     if env_file:
         with open(env_file, "a") as f:
