@@ -25,7 +25,7 @@ from icons import icon, logo_mark, AI_MARKS, AIS  # noqa: E402
 SITE_URL = "https://iowaaeo.com"
 NAME = "Iowa AEO"
 EMAIL = "info@iowaaeo.com"
-PHONE = ""            # e.g. "(515) 555-0123" - shows the phone pill in the header when set
+PHONE = "(515) 690-6632"  # shows the phone pill in the header
 BOOKING_URL = ""      # e.g. a Calendly link - "Book a Call" goes to the contact form until set
 WEB3FORMS_KEY = "9d30dc0e-53df-46e9-8f84-d1cb44ea1039"
 HERO_VIDEO = ""       # e.g. "/assets/video/hero.mp4" or a YouTube embed URL
@@ -156,6 +156,7 @@ def nav():
 <details><summary>Locations{icon("chevron", 18)}</summary>{"".join(f'<a href="/locations/{h["slug"]}/">{h["name"]}</a>' for h in HUBS)}<a href="/locations/">All locations</a></details>
 <a href="/media-room/">Media Room</a><a href="/contact/">Contact</a>
 {btn("Get a Free AI Check", "/contact/#form", "primary", "arrow")}
+{btn("Call " + PHONE, tel(PHONE), "dark", "phone") if PHONE else ""}
 </div>
 </header>'''
 
