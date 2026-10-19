@@ -23,10 +23,19 @@ npx http-server docs -p 8080     # preview at http://localhost:8080
 
 No dependencies beyond Python 3. Commit `docs/` after building.
 
-## Hosting
+## Hosting (Cloudflare Pages)
 
-- **GitHub Pages:** Settings → Pages → Deploy from branch → `main` / `/docs`. `docs/CNAME` is set to `iowaaeo.com`.
-- **Netlify / Vercel / Cloudflare Pages:** publish directory `docs`, build command `python3 build.py`.
+`.github/workflows/deploy.yml` deploys every push to `main` to Cloudflare Pages (project `iowa-aeo`).
+It creates the project, uploads `docs/`, attaches `iowaaeo.com` and `www.iowaaeo.com`, and points their
+DNS at Pages, removing the Namecheap parking records.
+
+One-time setup: add two repository secrets under **Settings → Secrets and variables → Actions**:
+
+- `CLOUDFLARE_API_TOKEN`: a custom token with *Account · Cloudflare Pages · Edit*, *Zone · DNS · Edit* and
+  *Zone · Zone · Read* (zone: iowaaeo.com)
+- `CLOUDFLARE_ACCOUNT_ID`: from the Cloudflare dashboard sidebar
+
+Then re-run the workflow from the **Actions** tab, or push any change.
 
 ## Common edits
 

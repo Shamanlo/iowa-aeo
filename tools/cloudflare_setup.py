@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+"""Cloudflare Pages setup used by .github/workflows/deploy.yml.
+
+    python3 tools/cloudflare_setup.py project   # create the Pages project if missing
+    python3 tools/cloudflare_setup.py domains   # attach custom domains and point DNS at Pages
+
+Needs CLOUDFLARE_API_TOKEN (Pages:Edit, DNS:Edit, Zone:Read) and
+CLOUDFLARE_ACCOUNT_ID. Safe to run repeatedly.
+"""
+import json
+import os
+import sys
+import urllib.error
+import urllib.request
+
+API = "https://api.cloudflare.com/client/v4"
+TOKEN = os.environ["CLOUDFLARE_API_TOKEN"]
+ACCOUNT = os.environ["CLOUDFLARE_ACCOUNT_ID"]
+PROJECT = os.environ.get("PROJECT", "iowa-aeo")
+DOMAIN = os.environ.get("DOMAIN", "iowaaeo.com")
+HOSTS = [DOMAIN, "www." + DOMAIN]
+
+# Registrar parking records that block the site; anything else is left alone.
+PARKING = ("162.255.119.153", "parkingpage.namecheap.com")
+
+
+def call(method, path, body=None, ok=(200,)):
+    req = urllib.request.Request(
+        API + path, method=method,
+        data=json.dumps(body).encode() if body is not None else None,
+        headers={"Authorization": f"Bearer {TOKEN}", "Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req) as r:
+            return r.status, json.load(r)
+    except urllib.error.HTTPError as err:
+        payload = json.loads(err.read() or b"{}")
+        if err.code in ok:
+            return err.code, payload
+        sys.exit(f"::error::Cloudflare API {method} {path} failed ({err.code}): {payload.get('errors')}")
+
+
+def ensure_project():
+    status, _ = call("GET", f"/accounts/{ACCOUNT}/pages/projects/{PROJECT}", ok=(200, 404))
+    if status == 404:
+        call("POST", f"/accounts/{ACCOUNT}/pages/projects",
+             {"name": PROJECT, "production_branch": "main"})
+        print(f"Created Pages project {PROJECT}")
+    else:
+        print(f"Pages project {PROJECT} exists")
+
+
+def ensure_domains():
+    target = f"{PROJECT}.pages.dev"
+
+    _, existing = call("GET", f"/accounts/{ACCOUNT}/pages/projects/{PROJECT}/domains")
+    attached = {d["name"] for d in existing["result"]}
+    for host in HOSTS:
+        if host not in attached:
+            call("POST", f"/accounts/{ACCOUNT}/pages/projects/{PROJECT}/domains", {"name": host})
+            print(f"Attached {host} to {PROJECT}")
+        else:
+            print(f"{host} already attached")
+
+    _, zones = call("GET", f"/zones?name={DOMAIN}")
+    if not zones["result"]:
+        sys.exit(f"::error::Zone {DOMAIN} not found for this token")
+    zone = zones["result"][0]
+    print(f"Zone {DOMAIN} status: {zone['status']}")
+    zid = zone["id"]
+
+    for host in HOSTS:
+        _, recs = call("GET", f"/zones/{zid}/dns_records?name={host}")
+        good = False
+        for r in recs["result"]:
+            if r["type"] == "CNAME" and r["content"] == target:
+                good = True
+            elif r["type"] in ("A", "AAAA", "CNAME") and any(p in r["content"] for p in PARKING):
+                call("DELETE", f"/zones/{zid}/dns_records/{r['id']}")
+                print(f"Deleted parking record {r['type']} {host} -> {r['content']}")
+            elif r["type"] in ("A", "AAAA", "CNAME"):
+                print(f"::warning::Left {r['type']} {host} -> {r['content']} in place; remove it so {host} serves the site")
+        if not good:
+            call("POST", f"/zones/{zid}/dns_records",
+                 {"type": "CNAME", "name": host, "content": target, "proxied": True, "ttl": 1})
+            print(f"Created CNAME {host} -> {target}")
+        else:
+            print(f"CNAME {host} -> {target} already set")
+
+
+if __name__ == "__main__":
+    {"project": ensure_project, "domains": ensure_domains}[sys.argv[1]]()
