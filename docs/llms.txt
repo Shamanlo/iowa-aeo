@@ -1,0 +1,34 @@
+# Iowa AEO
+
+> Iowa AEO is an Answer Engine Optimization (AEO) agency in Iowa. We help local businesses get recommended by AI assistants including ChatGPT, Google Gemini, Google AI Overviews, Perplexity, Claude and Microsoft Copilot.
+
+Contact: info@iowaaeo.com
+Service area: Iowa, focused on Des Moines, Cedar Rapids, Iowa City and the Quad Cities.
+
+## Services
+- AI Visibility Audit: We ask ChatGPT, Gemini, Perplexity, Claude and Google AI Overviews the questions your customers ask, then show you who gets named, how you're described, and why.
+- Entity & Listing Cleanup: AI pulls facts from Google, Bing, Apple Maps, Yelp and industry directories. We make your name, hours, services and details consistent everywhere it looks.
+- Answer-Ready Content: Service pages, FAQs and structured data that answer real customer questions in plain language, so AI has something specific to quote.
+- Citations & Reviews: Mentions in local press, guides and directories AI trusts, plus a review process that gets customers describing what you do best.
+
+## Locations
+- [Des Moines](https://iowaaeo.com/locations/des-moines/): West Des Moines, Ankeny, Urbandale, Johnston, Waukee, Clive, Altoona, Grimes, Norwalk, Indianola, Ames
+- [Cedar Rapids](https://iowaaeo.com/locations/cedar-rapids/): Marion, Hiawatha, Robins, Mount Vernon, Fairfax, Ely
+- [Iowa City](https://iowaaeo.com/locations/iowa-city/): Coralville, North Liberty, Tiffin, Solon, Kalona, West Branch
+- [Quad Cities](https://iowaaeo.com/locations/quad-cities/): Davenport, Bettendorf, LeClaire, Eldridge, Blue Grass, Moline, Rock Island, East Moline
+
+## Industries
+- [Restaurants & Bars](https://iowaaeo.com/industries/restaurants/): When someone asks AI where to eat tonight, it names three or four places. We make sure yours is one of them.
+- [Home Services](https://iowaaeo.com/industries/home-services/): Plumbers, HVAC, roofers and electricians: when a pipe bursts, people ask AI who can come today.
+- [Dentists & Orthodontists](https://iowaaeo.com/industries/dentists/): Patients ask AI for a dentist who takes their insurance and is gentle with nerves. Be the practice it names.
+- [Law Firms](https://iowaaeo.com/industries/law-firms/): People ask AI which attorney fits their exact situation. Clear practice details make you the answer.
+- [Medical & Med Spas](https://iowaaeo.com/industries/medical/): Clinics, chiropractors, physical therapists and med spas: AI is the new front desk for first-time patients.
+- [Real Estate](https://iowaaeo.com/industries/real-estate/): Buyers and sellers ask AI which agent knows their neighborhood. Make sure it knows you.
+- [Auto Repair & Dealers](https://iowaaeo.com/industries/auto/): “Who can fix my brakes today?” is a question AI answers every hour. Be the shop it trusts.
+- [Ag & Rural Businesses](https://iowaaeo.com/industries/agriculture/): Seed dealers, ag equipment, large-animal vets and rural services: Iowa runs on agriculture, and farmers ask AI too.
+
+## Pages
+- [Home](https://iowaaeo.com/)
+- [About](https://iowaaeo.com/about/)
+- [Contact](https://iowaaeo.com/contact/)
+- [Media Room](https://iowaaeo.com/media-room/)
