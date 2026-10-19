@@ -21,21 +21,24 @@ jobs:
       PROJECT: iowa-aeo
       DOMAIN: iowaaeo.com
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Check Cloudflare secrets
         run: |
-          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
-            echo "::error::Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID under Settings > Secrets and variables > Actions"
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::Add CLOUDFLARE_API_TOKEN under Settings > Secrets and variables > Actions"
             exit 1
           fi
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
       - name: Build site
         run: python3 build.py
+
+      - name: Find Cloudflare account
+        run: python3 tools/cloudflare_setup.py account
 
       - name: Create Pages project
         run: python3 tools/cloudflare_setup.py project

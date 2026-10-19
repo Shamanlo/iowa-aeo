@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Cloudflare Pages setup used by .github/workflows/deploy.yml.
 
+    python3 tools/cloudflare_setup.py account   # find the account ID if not set
     python3 tools/cloudflare_setup.py project   # create the Pages project if missing
     python3 tools/cloudflare_setup.py domains   # attach custom domains and point DNS at Pages
 
-Needs CLOUDFLARE_API_TOKEN (Pages:Edit, DNS:Edit, Zone:Read) and
-CLOUDFLARE_ACCOUNT_ID. Safe to run repeatedly.
+Needs CLOUDFLARE_API_TOKEN (Pages:Edit, DNS:Edit, Zone:Read). CLOUDFLARE_ACCOUNT_ID
+is optional when the token can see exactly one account. Safe to run repeatedly.
 """
 import json
 import os
@@ -15,7 +16,7 @@ import urllib.request
 
 API = "https://api.cloudflare.com/client/v4"
 TOKEN = os.environ["CLOUDFLARE_API_TOKEN"]
-ACCOUNT = os.environ["CLOUDFLARE_ACCOUNT_ID"]
+ACCOUNT = os.environ.get("CLOUDFLARE_ACCOUNT_ID", "")
 PROJECT = os.environ.get("PROJECT", "iowa-aeo")
 DOMAIN = os.environ.get("DOMAIN", "iowaaeo.com")
 HOSTS = [DOMAIN, "www." + DOMAIN]
@@ -37,6 +38,23 @@ def call(method, path, body=None, ok=(200,)):
         if err.code in ok:
             return err.code, payload
         sys.exit(f"::error::Cloudflare API {method} {path} failed ({err.code}): {payload.get('errors')}")
+
+
+def find_account():
+    """Look up the account ID and export it for later workflow steps."""
+    global ACCOUNT
+    if not ACCOUNT:
+        _, res = call("GET", "/accounts")
+        accounts = res["result"]
+        if len(accounts) != 1:
+            names = ", ".join(a["name"] for a in accounts) or "none"
+            sys.exit(f"::error::Token sees {len(accounts)} accounts ({names}); add a CLOUDFLARE_ACCOUNT_ID secret")
+        ACCOUNT = accounts[0]["id"]
+        print(f"Using account {accounts[0]['name']}")
+    env_file = os.environ.get("GITHUB_ENV")
+    if env_file:
+        with open(env_file, "a") as f:
+            f.write(f"CLOUDFLARE_ACCOUNT_ID={ACCOUNT}\n")
 
 
 def ensure_project():
@@ -88,4 +106,4 @@ def ensure_domains():
 
 
 if __name__ == "__main__":
-    {"project": ensure_project, "domains": ensure_domains}[sys.argv[1]]()
+    {"account": find_account, "project": ensure_project, "domains": ensure_domains}[sys.argv[1]]()

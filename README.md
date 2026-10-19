@@ -29,11 +29,11 @@ No dependencies beyond Python 3. Commit `docs/` after building.
 It creates the project, uploads `docs/`, attaches `iowaaeo.com` and `www.iowaaeo.com`, and points their
 DNS at Pages, removing the Namecheap parking records.
 
-One-time setup: add two repository secrets under **Settings → Secrets and variables → Actions**:
+One-time setup: add a repository secret under **Settings → Secrets and variables → Actions**:
 
 - `CLOUDFLARE_API_TOKEN`: a custom token with *Account · Cloudflare Pages · Edit*, *Zone · DNS · Edit* and
   *Zone · Zone · Read* (zone: iowaaeo.com)
-- `CLOUDFLARE_ACCOUNT_ID`: from the Cloudflare dashboard sidebar
+- `CLOUDFLARE_ACCOUNT_ID` (optional): only needed if the token can see more than one account
 
 Then re-run the workflow from the **Actions** tab, or push any change.
 
