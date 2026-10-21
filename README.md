@@ -45,3 +45,13 @@ Then re-run the workflow from the **Actions** tab, or push any change.
   (a YouTube embed URL also works). A play button appears on the hero frame.
 - **Media Room videos:** add entries to `MEDIA_VIDEOS`.
 - **Forms:** use Web3Forms. Submissions go to the email address registered to the access key.
+
+## Podcasts
+
+`podcast/` hosts podcast feeds on a separate Cloudflare Pages project, `blue-collar-media`
+(https://blue-collar-media.pages.dev), deployed by the same workflow.
+
+- Shows and episodes are listed in `podcast/shows.json`. Audio goes in `podcast/public/<show>/audio/`
+  (MP3, under 25 MB per file), and cover art in `podcast/public/<show>/cover.jpg` (3000×3000).
+- Run `python3 podcast/build_feed.py` (needs `ffprobe`) to rewrite each show's `feed.xml` and `index.html`.
+- Feed for Spotify, Apple or a Shopify podcast app: `https://blue-collar-media.pages.dev/<show>/feed.xml`

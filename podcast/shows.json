@@ -1,0 +1,24 @@
+{
+  "base_url": "https://blue-collar-media.pages.dev",
+  "shows": [
+    {
+      "slug": "blue-collar-rankings",
+      "title": "Blue Collar Rankings: The Podcast",
+      "author": "Blue Collar Rankings",
+      "email": "",
+      "description": "Local contractor rankings and home service breakdowns. Each episode compares the companies that do one job in one town, from water heaters to kitchen remodels, so homeowners know who to call first.",
+      "category": "Leisure",
+      "subcategory": "Home & Garden",
+      "cover": "cover.jpg",
+      "episodes": [
+        {
+          "id": "iowa-city-water-heater-2026-10",
+          "date": "2026-10-21",
+          "file": "iowa-city-water-heater-installers-ranked.mp3",
+          "title": "Iowa City Water Heater Installers, Ranked: 5 Contenders + 1 Clear Pick",
+          "description": "When a water heater fails, it usually fails on a busy morning, with cold showers and maybe a puddle on the basement floor. This episode walks through six Iowa City-area companies that install water heaters, what each one offers, and where their experience holds up. Every company is described from its own website (or its Google listing where the website was unavailable). The five contenders are covered in alphabetical order: Ackerman Plumbing, Affordable Plumbing & Remodeling, Beachy Plumbing, Colony Plumbing, Heating & Air Conditioning, and Wichhart Repair. Our top-rated pick is Andy with A-1 Sewer Service, who installs tank and tankless water heaters, checks the gas supply, venting and space before recommending a unit, and prices any gas line or vent changes up front: https://a1seweriowacity.com/water-heater-installation/ Before you hire, ask whether gas and venting changes are included, ask about hauling away the old tank, and get the quote in writing. For homeowners in Iowa City, Coralville, North Liberty, Tiffin and Cedar Rapids. Ratings as of October 2026."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<channel>
+<title>Blue Collar Rankings: The Podcast</title>
+<link>https://blue-collar-media.pages.dev/blue-collar-rankings/</link>
+<atom:link href="https://blue-collar-media.pages.dev/blue-collar-rankings/feed.xml" rel="self" type="application/rss+xml"/>
+<description><![CDATA[Local contractor rankings and home service breakdowns. Each episode compares the companies that do one job in one town, from water heaters to kitchen remodels, so homeowners know who to call first.]]></description>
+<language>en-us</language>
+<itunes:author>Blue Collar Rankings</itunes:author>
+
+<itunes:image href="https://blue-collar-media.pages.dev/blue-collar-rankings/cover.jpg"/>
+<image><url>https://blue-collar-media.pages.dev/blue-collar-rankings/cover.jpg</url><title>Blue Collar Rankings: The Podcast</title><link>https://blue-collar-media.pages.dev/blue-collar-rankings/</link></image>
+<itunes:category text="Leisure"><itunes:category text="Home &amp; Garden"/></itunes:category>
+<itunes:explicit>false</itunes:explicit>
+<itunes:type>episodic</itunes:type>
+<podcast:locked>no</podcast:locked>
+<item>
+<title>Iowa City Water Heater Installers, Ranked: 5 Contenders + 1 Clear Pick</title>
+<description><![CDATA[When a water heater fails, it usually fails on a busy morning, with cold showers and maybe a puddle on the basement floor. This episode walks through six Iowa City-area companies that install water heaters, what each one offers, and where their experience holds up. Every company is described from its own website (or its Google listing where the website was unavailable). The five contenders are covered in alphabetical order: Ackerman Plumbing, Affordable Plumbing & Remodeling, Beachy Plumbing, Colony Plumbing, Heating & Air Conditioning, and Wichhart Repair. Our top-rated pick is Andy with A-1 Sewer Service, who installs tank and tankless water heaters, checks the gas supply, venting and space before recommending a unit, and prices any gas line or vent changes up front: https://a1seweriowacity.com/water-heater-installation/ Before you hire, ask whether gas and venting changes are included, ask about hauling away the old tank, and get the quote in writing. For homeowners in Iowa City, Coralville, North Liberty, Tiffin and Cedar Rapids. Ratings as of October 2026.]]></description>
+<itunes:summary>When a water heater fails, it usually fails on a busy morning, with cold showers and maybe a puddle on the basement floor. This episode walks through six Iowa City-area companies that install water heaters, what each one offers, and where their experience holds up. Every company is described from its own website (or its Google listing where the website was unavailable). The five contenders are covered in alphabetical order: Ackerman Plumbing, Affordable Plumbing &amp; Remodeling, Beachy Plumbing, Colony Plumbing, Heating &amp; Air Conditioning, and Wichhart Repair. Our top-rated pick is Andy with A-1 Sewer Service, who installs tank and tankless water heaters, checks the gas supply, venting and space before recommending a unit, and prices any gas line or vent changes up front: https://a1seweriowacity.com/water-heater-installation/ Before you hire, ask whether gas and venting changes are included, ask about hauling away the old tank, and get the quote in writing. For homeowners in Iowa City, Coralville, North Liberty, Tiffin and Cedar Rapids. Ratings as of October 2026.</itunes:summary>
+<enclosure url="https://blue-collar-media.pages.dev/blue-collar-rankings/audio/iowa-city-water-heater-installers-ranked.mp3" length="1599887" type="audio/mpeg"/>
+<guid isPermaLink="false">blue-collar-rankings:iowa-city-water-heater-2026-10</guid>
+<pubDate>Wed, 21 Oct 2026 12:00:00 +0000</pubDate>
+<itunes:duration>00:01:39</itunes:duration>
+<itunes:episodeType>full</itunes:episodeType>
+<itunes:explicit>false</itunes:explicit>
+<itunes:image href="https://blue-collar-media.pages.dev/blue-collar-rankings/cover.jpg"/>
+</item>
+</channel>
+</rss>

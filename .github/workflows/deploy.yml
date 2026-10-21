@@ -48,3 +48,9 @@ jobs:
 
       - name: Connect iowaaeo.com
         run: python3 tools/cloudflare_setup.py domains
+
+      - name: Create podcast Pages project
+        run: PROJECT=blue-collar-media python3 tools/cloudflare_setup.py project
+
+      - name: Deploy podcasts
+        run: npx --yes wrangler@4.140.0 pages deploy podcast/public --project-name blue-collar-media --branch main --commit-dirty=true
