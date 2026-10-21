@@ -28,8 +28,8 @@ EMAIL = "info@iowaaeo.com"
 PHONE = "(515) 690-6632"  # shows the phone pill in the header
 BOOKING_URL = ""      # e.g. a Calendly link - "Book a Call" goes to the contact form until set
 WEB3FORMS_KEY = "9d30dc0e-53df-46e9-8f84-d1cb44ea1039"
-HERO_VIDEO = ""       # e.g. "/assets/video/hero.mp4" or a YouTube embed URL
-HERO_POSTER = ""      # optional poster image for the hero video
+HERO_VIDEO = "/assets/video/iowa-aeo-commercial.mp4"  # or a YouTube embed URL
+HERO_POSTER = "/assets/video/iowa-aeo-commercial.jpg"  # optional poster image for the hero video
 MEDIA_VIDEOS = []     # [{"title": "...", "src": "/assets/video/x.mp4" or YouTube embed URL, "poster": ""}]
 
 OUT = ROOT / "docs"
@@ -464,6 +464,16 @@ def towns_grid(hub, current=None):
 # ---------------------------------------------------------------------------
 # Pages
 # ---------------------------------------------------------------------------
+def hero_video_schema():
+    url = HERO_VIDEO if HERO_VIDEO.startswith("http") else SITE_URL + HERO_VIDEO
+    return {"@type": "VideoObject", "name": "Iowa AEO: Get Recommended by AI",
+            "description": "How Iowa AEO helps businesses in Des Moines, Cedar Rapids, Iowa City and the Quad Cities "
+                           "get recommended by ChatGPT, Gemini, Perplexity, Claude and Google AI Overviews.",
+            "thumbnailUrl": SITE_URL + (HERO_POSTER or "/assets/img/og.png"),
+            "contentUrl": url, "uploadDate": "2026-10-21", "duration": "PT40S",
+            "publisher": {"@id": SITE_URL + "/#org"}}
+
+
 def build_home():
     qs = [
         question_set("Des Moines", ["restaurants"])[0],
@@ -477,7 +487,7 @@ def build_home():
             + industries_grid() + locations_grid() + seo_vs_aeo() + faq_sec(HOME_FAQ) + lead_form(source="Home"))
     page("/", "Iowa AEO | Answer Engine Optimization Agency in Iowa",
          "Iowa AEO helps Iowa businesses get recommended by ChatGPT, Gemini, Perplexity, Claude and Google AI Overviews. Serving Des Moines, Cedar Rapids, Iowa City and the Quad Cities.",
-         body, [faq_schema(HOME_FAQ)])
+         body, [faq_schema(HOME_FAQ)] + ([hero_video_schema()] if HERO_VIDEO else []))
 
 
 def hub_faq(hub):
