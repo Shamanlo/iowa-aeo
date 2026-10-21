@@ -139,7 +139,12 @@ p { margin: 0; }
 .vf-play { position: absolute; left: 50%; bottom: 18%; translate: -50% 0; width: 116px; height: 116px; border-radius: 50%; border: 0; display: grid; place-items: center; background: var(--accent); color: var(--ink); box-shadow: 0 6px 0 var(--accent-dk), 0 20px 50px rgba(0,0,0,.35); transition: transform .15s; }
 .vf-play:hover { transform: scale(1.05); }
 .vf-play .i { margin-left: 6px; }
-.vframe.playing .vf-head, .vframe.playing .vf-strip, .vframe.playing .vf-play { display: none; }
+.vframe.playing .vf-head, .vframe.playing .vf-strip, .vframe.playing .vf-play, .vframe.playing .vf-poster { display: none; }
+.vframe-video { max-width: 1040px; background: #000; }
+.vf-poster { width: 100%; height: auto; aspect-ratio: 16/9; object-fit: cover; }
+.vframe-video .vf-play { top: 50%; bottom: auto; translate: -50% -50%; }
+.vframe-video .vf-play:hover { transform: scale(1.06); }
+.hero:has(+ .vf-sec) { padding-top: 52px; padding-bottom: 32px; }
 .vframe video, .vframe iframe { width: 100%; aspect-ratio: 16/9; border: 0; background: #000; }
 
 /* Sections */
@@ -464,6 +469,8 @@ a.c-card:hover { border-color: var(--accent); }
   .vt-ico { width: 56px; height: 56px; border-radius: 16px; }
   .vt { margin: 0 4px; font-size: 13px; }
   .vf-play { width: 84px; height: 84px; bottom: 30%; }
+  .vframe-video .vf-play { width: 72px; height: 72px; }
+  .hero:has(+ .vf-sec) { padding-top: 36px; padding-bottom: 28px; }
   .sim-card { padding: 20px; }
   .sim-q { font-size: 16px; }
   .sim-ai { font-size: 15px; padding: 9px 13px; }

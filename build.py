@@ -269,16 +269,17 @@ def video_frame(title_html="Is AI recommending<br>" + hl("your competitors?")):
     strip = "".join(f'<div class="vt vt-{n}"><span class="vt-ico">{icon(ic, 34)}</span><span>{lbl}</span></div>'
                     for n, (ic, lbl) in enumerate(tiles))
     if HERO_VIDEO:
-        media = (f'<button class="vf-play" data-video="{e(HERO_VIDEO)}" data-poster="{e(HERO_POSTER)}" '
-                 f'aria-label="Play video">{icon("play", 34)}</button>')
-    else:
-        media = ""
+        # The commercial opens on the same headline, so its first frame is the whole frame.
+        return f'''<section class="vf-sec"><div class="wrap">
+<div class="vframe vframe-video" data-vframe>
+<img class="vf-poster" src="{e(HERO_POSTER)}" width="1600" height="900" alt="Is AI recommending your competitors? Iowa AEO commercial" fetchpriority="high">
+<button class="vf-play" data-video="{e(HERO_VIDEO)}" data-poster="{e(HERO_POSTER)}" aria-label="Play the Iowa AEO video">{icon("play", 34)}</button>
+</div></div></section>'''
     return f'''<section class="vf-sec"><div class="wrap">
 <div class="vframe" data-vframe>
 <div class="vf-top"></div>
 <div class="vf-head"><h2>{title_html}</h2></div>
 <div class="vf-strip">{strip}<div class="vt vt-you"><span class="you-tag">Your business</span></div></div>
-{media}
 </div></div></section>'''
 
 
