@@ -54,3 +54,18 @@ jobs:
 
       - name: Deploy podcasts
         run: npx --yes wrangler@4.140.0 pages deploy podcast/public --project-name blue-collar-media --branch main --commit-dirty=true
+
+  # Removes temporary transfer/* branches used to hand files between sessions.
+  cleanup-transfers:
+    runs-on: ubuntu-latest
+    needs: deploy
+    permissions:
+      contents: write
+    steps:
+      - name: Delete transfer branches
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for b in $(gh api "repos/${{ github.repository }}/branches" --paginate --jq '.[].name | select(startswith("transfer/"))'); do
+            gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/$b" && echo "Deleted $b"
+          done
