@@ -1,0 +1,74 @@
+# Deploys bluecollarrankings.com from the public Shamanlo/blue-collar-rankings repo,
+# using this repo's Cloudflare token. Runs on demand, when this file changes, and every
+# 3 hours (skipped when the site's latest commit is already deployed).
+name: Deploy Blue Collar Rankings
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */3 * * *"
+  push:
+    branches: [main]
+    paths: [.github/workflows/deploy-blue-collar-rankings.yml]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-blue-collar-rankings
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      PROJECT: blue-collar-rankings
+      DOMAIN: bluecollarrankings.com
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          repository: Shamanlo/blue-collar-rankings
+          path: site
+
+      - name: Find Cloudflare account
+        run: python3 tools/cloudflare_setup.py account
+
+      - name: Create Pages project
+        run: python3 tools/cloudflare_setup.py project
+
+      - name: Skip if already deployed
+        id: check
+        run: |
+          sha=$(git rev-parse HEAD)
+          live=$(curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$PROJECT/deployments?env=production&per_page=1" \
+            | jq -r '.result[0].deployment_trigger.metadata.commit_hash // empty')
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$live" = "$sha" ]; then
+            echo "::notice::$sha is already live; nothing to deploy."
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+            echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v5
+        if: steps.check.outputs.deploy == 'true'
+        with:
+          node-version: "22"
+
+      - name: Build site
+        if: steps.check.outputs.deploy == 'true'
+        run: npm run build
+
+      - name: Deploy
+        if: steps.check.outputs.deploy == 'true'
+        run: npx --yes wrangler@4.140.0 pages deploy public --project-name "$PROJECT" --branch main --commit-hash "${{ steps.check.outputs.sha }}" --commit-dirty=true
+
+      - name: Connect bluecollarrankings.com
+        if: steps.check.outputs.deploy == 'true'
+        run: python3 tools/cloudflare_setup.py domains
