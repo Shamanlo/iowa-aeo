@@ -1,6 +1,7 @@
 # Deploys bluecollarrankings.com from the public Shamanlo/blue-collar-rankings repo,
 # using this repo's Cloudflare token. Runs on demand, when this file changes, and every
-# 3 hours (skipped when the site's latest commit is already deployed).
+# 3 hours. Each run rebuilds (picking up new podcast episodes from the RSS feed) and skips
+# scheduled deploys when the built site is identical to what's live.
 name: Deploy Blue Collar Rankings
 
 on:
@@ -41,33 +42,34 @@ jobs:
       - name: Create Pages project
         run: python3 tools/cloudflare_setup.py project
 
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      # Builds every run so new podcast episodes (read from the RSS feed at build time) are picked up.
+      - name: Build site
+        run: npm run build
+
       - name: Skip if already deployed
         id: check
         run: |
           sha=$(git rev-parse HEAD)
+          site=$(find public functions -type f -print0 2>/dev/null | sort -z | xargs -0 sha256sum | sha256sum | cut -c1-16)
           live=$(curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
             "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$PROJECT/deployments?env=production&per_page=1" \
-            | jq -r '.result[0].deployment_trigger.metadata.commit_hash // empty')
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "$live" = "$sha" ]; then
-            echo "::notice::$sha is already live; nothing to deploy."
+            | jq -r '.result[0].deployment_trigger.metadata.commit_message // empty')
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "site=$site" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$live" = "site:$site" ]; then
+            echo "::notice::Built site $site is already live; nothing to deploy."
             echo "deploy=false" >> "$GITHUB_OUTPUT"
           else
             echo "deploy=true" >> "$GITHUB_OUTPUT"
-            echo "sha=$sha" >> "$GITHUB_OUTPUT"
           fi
-
-      - uses: actions/setup-node@v5
-        if: steps.check.outputs.deploy == 'true'
-        with:
-          node-version: "22"
-
-      - name: Build site
-        if: steps.check.outputs.deploy == 'true'
-        run: npm run build
 
       - name: Deploy
         if: steps.check.outputs.deploy == 'true'
-        run: npx --yes wrangler@4.140.0 pages deploy public --project-name "$PROJECT" --branch main --commit-hash "${{ steps.check.outputs.sha }}" --commit-dirty=true
+        run: npx --yes wrangler@4.140.0 pages deploy public --project-name "$PROJECT" --branch main --commit-hash "${{ steps.check.outputs.sha }}" --commit-message "site:${{ steps.check.outputs.site }}" --commit-dirty=true
 
       - name: Connect bluecollarrankings.com
         if: steps.check.outputs.deploy == 'true'
